@@ -4,14 +4,17 @@
 @theme {
   --font-sans: 'Noto Sans KR', sans-serif;
 
+  /* Palette */
   --color-primary: #4880EE;
   --color-red: #E84118;
   --color-gray: #DADADA;
   --color-lightGray: #F2F4F6;
   --color-white: #FFFFFF;
   --color-black: #222222;
+
   --color-textPrimary: #353C49;
   --color-textSecondary: #6D7582;
+  --color-textTitle: #1A1E27;
   --color-textSubtitle: #8D94A0;
 }
 
@@ -20,4 +23,55 @@ body {
   font-family: var(--font-sans);
   color: var(--color-textPrimary);
   background-color: var(--color-white);
+}
+
+/* Typography */
+@layer utilities {
+  .text-title1 {
+    font-size: 24px;
+    line-height: 24px;
+    font-weight: 700;
+  }
+
+  .text-title2 {
+    font-size: 24px;
+    line-height: 24px;
+    font-weight: 700;
+  }
+
+  .text-title3 {
+    font-size: 18px;
+    line-height: 18px;
+    font-weight: 700;
+  }
+
+  .text-body1 {
+    font-size: 20px;
+    line-height: 20px;
+    font-weight: 500;
+  }
+
+  .text-body2 {
+    font-size: 14px;
+    line-height: 14px;
+    font-weight: 500;
+  }
+
+  .text-body2-bold {
+    font-size: 14px;
+    line-height: 14px;
+    font-weight: 700;
+  }
+
+  .text-caption {
+    font-size: 16px;
+    line-height: 16px;
+    font-weight: 500;
+  }
+
+  .text-small {
+    font-size: 10px;
+    line-height: 10px;
+    font-weight: 500;
+  }
 }
