@@ -1,11 +1,13 @@
 import { useState } from 'react';
 import iconSearch from '@/assets/icons/icon_search.png';
 import iconBook from '@/assets/icons/icon_book.png';
+import { BookListItem, BookListItemDetail } from '@/features/book-list';
 import { useBookSearch } from '@/entities/book';
 
 export default function SearchPage() {
   const [searchInput, setSearchInput] = useState('');
   const [searchQuery, setSearchQuery] = useState('');
+  const [expandedBookId, setExpandedBookId] = useState<string | null>(null);
 
   const { data, isLoading, error } = useBookSearch({
     query: searchQuery,
@@ -90,7 +92,33 @@ export default function SearchPage() {
         </div>
       ) : books.length > 0 ? (
         <div>
-          {/* ToDo - 도서 목록 표출 */}
+          {books.map((book) => (
+            expandedBookId === book.isbn ? (
+              <BookListItemDetail
+                key={book.isbn}
+                id={book.isbn}
+                thumbnail={book.thumbnail}
+                title={book.title}
+                author={book.authors.join(', ')}
+                description={book.contents}
+                originalPrice={book.price}
+                salePrice={book.sale_price}
+                onPurchase={() => console.log('구매:', book.title)}
+                onClose={() => setExpandedBookId(null)}
+              />
+            ) : (
+              <BookListItem
+                key={book.isbn}
+                id={book.isbn}
+                thumbnail={book.thumbnail}
+                title={book.title}
+                author={book.authors.join(', ')}
+                price={book.sale_price}
+                onViewDetail={() => setExpandedBookId(book.isbn)}
+                onPurchase={() => console.log('구매:', book.title)}
+              />
+            )
+          ))}
         </div>
       ) : (
         /* 빈 상태 */
