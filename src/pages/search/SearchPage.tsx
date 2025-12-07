@@ -53,24 +53,14 @@ export default function SearchPage() {
             expandedBookId === book.isbn ? (
               <BookListItemDetail
                 key={book.isbn}
-                id={book.isbn}
-                thumbnail={book.thumbnail}
-                title={book.title}
-                author={book.authors.join(', ')}
-                description={book.contents}
-                originalPrice={book.price}
-                salePrice={book.sale_price}
+                book={book}
                 onPurchase={() => console.log('구매:', book.title)}
                 onClose={() => setExpandedBookId(null)}
               />
             ) : (
               <BookListItem
                 key={book.isbn}
-                id={book.isbn}
-                thumbnail={book.thumbnail}
-                title={book.title}
-                author={book.authors.join(', ')}
-                price={book.sale_price}
+                book={book}
                 onViewDetail={() => setExpandedBookId(book.isbn)}
                 onPurchase={() => console.log('구매:', book.title)}
               />

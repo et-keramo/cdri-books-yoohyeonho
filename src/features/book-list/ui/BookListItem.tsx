@@ -1,24 +1,36 @@
+import type { KakaoBook } from '@/shared/api';
 import iconArrowDown from '@/assets/icons/icon_arrow_down.png';
 import iconLikeLine from '@/assets/icons/icon_like_line.png';
+import iconLikeFill from '@/assets/icons/icon_like_fill.png';
+import { useFavoriteBooks } from '@/features/book-favorite/model';
 
 interface BookListItemProps {
-  id: string;
-  thumbnail: string;
-  title: string;
-  author: string;
-  price: number;
+  book: KakaoBook;
   onViewDetail: () => void;
   onPurchase: () => void;
 }
 
 export default function BookListItem({
-  thumbnail,
-  title,
-  author,
-  price,
+  book,
   onViewDetail,
   onPurchase,
 }: BookListItemProps) {
+  const { addToFavorite, removeFromFavorite, isFavorite } = useFavoriteBooks();
+  const favorited = isFavorite(book);
+
+  const handleToggleFavorite = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    if (favorited) {
+      removeFromFavorite(book);
+    } else {
+      addToFavorite(book);
+    }
+  };
+
+  const thumbnail = book.thumbnail;
+  const title = book.title;
+  const author = book.authors.join(', ');
+  const price = book.sale_price;
   return (
     <div className="flex items-center w-[960px] h-[100px] pl-12 pr-4 border-b border-gray">
       {/* 썸네일 */}
@@ -28,11 +40,16 @@ export default function BookListItem({
           alt={title}
           className="w-12 h-[68px] object-cover rounded"
         />
-        <img
-          src={iconLikeLine}
-          alt="찜하기"
-          className="absolute top-0 right-0 w-4 h-4"
-        />
+        <button
+          onClick={handleToggleFavorite}
+          className="absolute top-0 right-0 w-4 h-4 cursor-pointer"
+        >
+          <img
+            src={favorited ? iconLikeFill : iconLikeLine}
+            alt={favorited ? '찜 취소' : '찜하기'}
+            className="w-full h-full"
+          />
+        </button>
       </div>
 
       {/* 제목/저자 */}

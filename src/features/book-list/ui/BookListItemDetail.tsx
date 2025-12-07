@@ -1,28 +1,38 @@
+import type { KakaoBook } from '@/shared/api';
 import iconArrowUp from '@/assets/icons/icon_arrow_up.png';
 import iconLikeLine from '@/assets/icons/icon_like_line.png';
+import iconLikeFill from '@/assets/icons/icon_like_fill.png';
+import { useFavoriteBooks } from '@/features/book-favorite/model';
 
 interface BookListItemDetailProps {
-  id: string;
-  thumbnail: string;
-  title: string;
-  author: string;
-  description: string;
-  originalPrice: number;
-  salePrice: number;
+  book: KakaoBook;
   onPurchase: () => void;
   onClose: () => void;
 }
 
 export default function BookListItemDetail({
-  thumbnail,
-  title,
-  author,
-  description,
-  originalPrice,
-  salePrice,
+  book,
   onPurchase,
   onClose,
 }: BookListItemDetailProps) {
+  const { addToFavorite, removeFromFavorite, isFavorite } = useFavoriteBooks();
+  const favorited = isFavorite(book);
+
+  const handleToggleFavorite = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    if (favorited) {
+      removeFromFavorite(book);
+    } else {
+      addToFavorite(book);
+    }
+  };
+
+  const thumbnail = book.thumbnail;
+  const title = book.title;
+  const author = book.authors.join(', ');
+  const description = book.contents;
+  const originalPrice = book.price;
+  const salePrice = book.sale_price;
   return (
     <div className="flex w-[960px] pl-[54px] pr-4 py-6">
       {/* 썸네일 */}
@@ -32,11 +42,16 @@ export default function BookListItemDetail({
           alt={title}
           className="w-[210px] h-[280px] object-cover rounded"
         />
-        <img
-          src={iconLikeLine}
-          alt="찜하기"
-          className="absolute top-2 right-2 w-6 h-6"
-        />
+        <button
+          onClick={handleToggleFavorite}
+          className="absolute top-2 right-2 w-6 h-6 cursor-pointer"
+        >
+          <img
+            src={favorited ? iconLikeFill : iconLikeLine}
+            alt={favorited ? '찜 취소' : '찜하기'}
+            className="w-full h-full"
+          />
+        </button>
       </div>
 
       {/* 제목/저자/책소개 */}
