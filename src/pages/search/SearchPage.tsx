@@ -3,6 +3,7 @@ import iconBook from '@/assets/icons/icon_book.png';
 import { BookListItem, BookListItemDetail } from '@/features/book-list';
 import { SearchBox } from '@/features/book-search';
 import { useBookSearch } from '@/entities/book';
+import { EmptyStatus, ErrorStatus, LoadingStatus } from '@/shared/ui/common';
 
 export default function SearchPage() {
   const [searchQuery, setSearchQuery] = useState('');
@@ -43,15 +44,9 @@ export default function SearchPage() {
 
       {/* 검색 결과 목록 */}
       {isLoading ? (
-        <div className="flex items-center justify-center py-20">
-          <p className="text-caption text-textSecondary">검색 중...</p>
-        </div>
+        <LoadingStatus text="검색 중..." />
       ) : error ? (
-        <div className="flex items-center justify-center py-20">
-          <p className="text-caption text-red-500">
-            오류가 발생했습니다
-          </p>
-        </div>
+        <ErrorStatus text="오류가 발생했습니다" />
       ) : books.length > 0 ? (
         <div>
           {books.map((book) => (
@@ -83,17 +78,7 @@ export default function SearchPage() {
           ))}
         </div>
       ) : (
-        /* 빈 상태 */
-        <div className="flex flex-col items-center justify-center py-20">
-          <img
-            src={iconBook}
-            alt="책 아이콘"
-            className="w-20 h-20 mb-4"
-          />
-          <p className="text-caption text-textSecondary">
-            검색된 결과가 없습니다.
-          </p>
-        </div>
+        <EmptyStatus icon={iconBook} text="검색된 결과가 없습니다." />
       )}
     </div>
   );
