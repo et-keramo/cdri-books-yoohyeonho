@@ -7,13 +7,11 @@ import { useFavoriteBooks } from '@/features/book-favorite/model';
 interface BookListItemProps {
   book: KakaoBook;
   onViewDetail: () => void;
-  onPurchase: () => void;
 }
 
 export default function BookListItem({
   book,
   onViewDetail,
-  onPurchase,
 }: BookListItemProps) {
   const { addToFavorite, removeFromFavorite, isFavorite } = useFavoriteBooks();
   const favorited = isFavorite(book);
@@ -25,6 +23,10 @@ export default function BookListItem({
     } else {
       addToFavorite(book);
     }
+  };
+
+  const handlePurchase = () => {
+    window.open(book.url, '_blank', 'noopener,noreferrer');
   };
 
   const thumbnail = book.thumbnail;
@@ -66,7 +68,7 @@ export default function BookListItem({
       {/* 구매하기/상세보기 버튼 */}
       <div className="flex gap-2">
         <button
-          onClick={onPurchase}
+          onClick={handlePurchase}
           className="w-[115px] h-12 px-5 py-[13px] text-caption text-white
             bg-primary rounded-lg cursor-pointer hover:bg-primary/90 transition-colors"
         >

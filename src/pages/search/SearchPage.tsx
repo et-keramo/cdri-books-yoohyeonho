@@ -87,7 +87,6 @@ export default function SearchPage() {
                 <BookListItemDetail
                   key={bookId}
                   book={book}
-                  onPurchase={() => console.log('구매:', book.title)}
                   onClose={() => setExpandedBookId(null)}
                 />
               ) : (
@@ -95,7 +94,6 @@ export default function SearchPage() {
                   key={bookId}
                   book={book}
                   onViewDetail={() => setExpandedBookId(bookId)}
-                  onPurchase={() => console.log('구매:', book.title)}
                 />
               );
             })}

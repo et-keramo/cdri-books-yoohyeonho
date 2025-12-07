@@ -6,13 +6,11 @@ import { useFavoriteBooks } from '@/features/book-favorite/model';
 
 interface BookListItemDetailProps {
   book: KakaoBook;
-  onPurchase: () => void;
   onClose: () => void;
 }
 
 export default function BookListItemDetail({
   book,
-  onPurchase,
   onClose,
 }: BookListItemDetailProps) {
   const { addToFavorite, removeFromFavorite, isFavorite } = useFavoriteBooks();
@@ -25,6 +23,10 @@ export default function BookListItemDetail({
     } else {
       addToFavorite(book);
     }
+  };
+
+  const handlePurchase = () => {
+    window.open(book.url, '_blank', 'noopener,noreferrer');
   };
 
   const thumbnail = book.thumbnail;
@@ -100,7 +102,7 @@ export default function BookListItemDetail({
             </span>
           </p>
           <button
-            onClick={onPurchase}
+            onClick={handlePurchase}
             className="w-60 h-12 px-5 py-[13px] text-caption text-white
               bg-primary rounded-lg cursor-pointer hover:bg-primary/90 transition-colors"
           >

@@ -55,7 +55,6 @@ export default function FavoritesPage() {
                 <BookListItemDetail
                   key={bookId}
                   book={book}
-                  onPurchase={() => console.log('구매:', book.title)}
                   onClose={() => setExpandedBookId(null)}
                 />
               ) : (
@@ -63,7 +62,6 @@ export default function FavoritesPage() {
                   key={bookId}
                   book={book}
                   onViewDetail={() => setExpandedBookId(bookId)}
-                  onPurchase={() => console.log('구매:', book.title)}
                 />
               );
             })}
