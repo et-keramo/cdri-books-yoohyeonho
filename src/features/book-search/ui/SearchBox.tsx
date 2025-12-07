@@ -1,34 +1,56 @@
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import iconSearch from '@/assets/icons/icon_search.png';
 import iconClose from '@/assets/icons/icon_close.png';
 import { useSearchHistory } from '../model';
+import SearchDetailPopup from './SearchDetailPopup';
 
 interface SearchBoxProps {
-  onSearch: (query: string) => void;
+  onSearch: (query: string, target?: 'title' | 'person' | 'publisher') => void;
 }
 
 export default function SearchBox({ onSearch }: SearchBoxProps) {
   const [searchInput, setSearchInput] = useState('');
   const [isFocused, setIsFocused] = useState(false);
+  const [isDetailedSearchOpen, setIsDetailedSearchOpen] = useState(false);
+  const detailButtonRef = useRef<HTMLButtonElement>(null);
+  const searchContainerRef = useRef<HTMLDivElement>(null);
+  const isDetailedSearchingRef = useRef(false);
   const { history, addToHistory, removeFromHistory } = useSearchHistory();
 
-  const handleSearch = (query?: string) => {
+  const handleSearch = (query?: string, target?: 'title' | 'person' | 'publisher') => {
     const searchTerm = query || searchInput.trim();
     if (searchTerm) {
       addToHistory(searchTerm);
-      onSearch(searchTerm);
+      onSearch(searchTerm, target);
+
+      if (!target) {
+        setIsDetailedSearchOpen(false);
+      }
     }
+  };
+
+  const handleDetailedSearch = (query: string, target: 'title' | 'person' | 'publisher') => {
+    isDetailedSearchingRef.current = true;
+    setSearchInput('');
+    handleSearch(query, target);
+    setTimeout(() => {
+      isDetailedSearchingRef.current = false;
+    }, 100);
   };
 
   const handleKeyDown = (e: React.KeyboardEvent) => {
     if (e.key === 'Enter') {
-      handleSearch();
+      if (isDetailedSearchingRef.current) {
+        e.preventDefault();
+        return;
+      }
+      handleSearch(undefined, undefined);
     }
   };
 
   const handleHistoryItemClick = (term: string) => {
     setSearchInput(term);
-    handleSearch(term);
+    handleSearch(term, undefined);
   };
 
   const handleDeleteHistoryItem = (e: React.MouseEvent, term: string) => {
@@ -38,8 +60,11 @@ export default function SearchBox({ onSearch }: SearchBoxProps) {
   };
 
   return (
-    <div className="flex items-start gap-4 mb-6">
-      <div className="w-[480px] bg-lightGray rounded-[24px]">
+    <div className="relative flex items-start gap-4 mb-6">
+      <div
+        ref={searchContainerRef}
+        className="w-[480px] bg-lightGray rounded-[24px]"
+      >
         {/* 검색어 입력 */}
         <div className="flex items-center h-[50px] px-[10px] py-[10px]">
           <img
@@ -88,14 +113,27 @@ export default function SearchBox({ onSearch }: SearchBoxProps) {
       </div>
 
       {/* 상세검색 버튼 */}
-      <button
-        className="w-[72px] h-[35px] px-[10px] py-[5px] text-body2 text-textSubtitle
-          border border-textSubtitle rounded-[8px]
-          hover:bg-gray/20 active:translate-y-0.5
-          cursor-pointer transition-all ease-out duration-300"
-      >
-        상세검색
-      </button>
+      <div className="relative mt-[7.5px]">
+        <button
+          ref={detailButtonRef}
+          onClick={() => setIsDetailedSearchOpen(!isDetailedSearchOpen)}
+          className="w-[72px] h-[35px] px-[10px] py-[5px] text-body2 text-textSubtitle
+            border border-textSubtitle rounded-[8px]
+            hover:bg-gray/20 active:translate-y-0.5
+            cursor-pointer transition-all ease-out duration-300"
+        >
+          상세검색
+        </button>
+
+        {/* 상세검색 팝업 */}
+        <SearchDetailPopup
+          isOpen={isDetailedSearchOpen}
+          onClose={() => setIsDetailedSearchOpen(false)}
+          onSearch={handleDetailedSearch}
+          buttonRef={detailButtonRef}
+          searchContainerRef={searchContainerRef}
+        />
+      </div>
     </div>
   );
 }

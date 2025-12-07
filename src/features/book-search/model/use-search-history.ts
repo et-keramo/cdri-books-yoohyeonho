@@ -19,10 +19,11 @@ export function useSearchHistory() {
   // 기록 추가
   const addToHistory = (term: string) => {
     const trimmed = term.trim();
-    if (!trimmed) return;
+    if (!trimmed) {
+      return;
+    }
 
     setHistory((prev) => {
-      // Remove duplicates and add to front
       const filtered = prev.filter((item) => item !== trimmed);
       const newHistory = [trimmed, ...filtered].slice(0, MAX_HISTORY);
       localStorage.setItem(STORAGE_KEY, JSON.stringify(newHistory));

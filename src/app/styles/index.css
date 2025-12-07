@@ -16,6 +16,7 @@
   --color-textSecondary: #6D7582;
   --color-textTitle: #1A1E27;
   --color-textSubtitle: #8D94A0;
+  --color-textCaption: #8D94A0;
 }
 
 body {
@@ -25,8 +26,39 @@ body {
   background-color: var(--color-white);
 }
 
+/* Animations */
+@keyframes move-in-bottom {
+  from {
+    transform: translateY(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes move-out-top {
+  from {
+    transform: translateY(0);
+    opacity: 1;
+  }
+  to {
+    transform: translateY(-100%);
+    opacity: 0;
+  }
+}
+
 /* Typography */
 @layer utilities {
+  .animate-move-in-bottom {
+    animation: move-in-bottom 300ms ease-out;
+  }
+
+  .animate-move-out-top {
+    animation: move-out-top 300ms ease-out;
+  }
+
   .text-title1 {
     font-size: 24px;
     line-height: 24px;

@@ -6,15 +6,18 @@ import { useBookSearch } from '@/entities/book';
 
 export default function SearchPage() {
   const [searchQuery, setSearchQuery] = useState('');
+  const [searchTarget, setSearchTarget] = useState<'title' | 'person' | 'publisher' | undefined>();
   const [expandedBookId, setExpandedBookId] = useState<string | null>(null);
 
   const { data, isLoading, error } = useBookSearch({
     query: searchQuery,
     size: 10,
+    ...(searchTarget && { target: searchTarget }),
   });
 
-  const handleSearch = (query: string) => {
+  const handleSearch = (query: string, target?: 'title' | 'person' | 'publisher') => {
     setSearchQuery(query);
+    setSearchTarget(target);
   };
 
   const books = data?.documents || [];
