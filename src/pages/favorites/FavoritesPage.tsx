@@ -1,9 +1,10 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState } from 'react';
 import iconBook from '@/assets/icons/icon_book.png';
 import { EmptyStatus, LoadingStatus } from '@/shared/ui/common';
 import { BookListItem, BookListItemDetail } from '@/features/book-list';
 import { useFavoriteBooks } from '@/features/book-favorite/model';
 import { getBookId } from '@/shared/lib/book-utils';
+import { useInfiniteScroll } from '@/shared/hooks';
 
 const ITEMS_PER_PAGE = 10;
 
@@ -11,29 +12,11 @@ export default function FavoritesPage() {
   const { favoriteBooks } = useFavoriteBooks();
   const [expandedBookId, setExpandedBookId] = useState<string | null>(null);
   const [displayCount, setDisplayCount] = useState(ITEMS_PER_PAGE);
-  const observerTarget = useRef<HTMLDivElement>(null);
 
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        if (entries[0].isIntersecting && displayCount < favoriteBooks.length) {
-          setDisplayCount((prev) => prev + ITEMS_PER_PAGE);
-        }
-      },
-      { threshold: 0.1 }
-    );
-
-    const currentTarget = observerTarget.current;
-    if (currentTarget) {
-      observer.observe(currentTarget);
-    }
-
-    return () => {
-      if (currentTarget) {
-        observer.unobserve(currentTarget);
-      }
-    };
-  }, [displayCount, favoriteBooks.length]);
+  const observerTarget = useInfiniteScroll(
+    () => setDisplayCount((prev) => prev + ITEMS_PER_PAGE),
+    { enabled: displayCount < favoriteBooks.length }
+  );
 
   const displayedBooks = favoriteBooks.slice(0, displayCount);
 

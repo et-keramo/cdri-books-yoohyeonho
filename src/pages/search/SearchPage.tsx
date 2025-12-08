@@ -1,16 +1,16 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState } from 'react';
 import iconBook from '@/assets/icons/icon_book.png';
 import { BookListItem, BookListItemDetail } from '@/features/book-list';
 import { SearchBox } from '@/features/book-search';
 import { useBookSearchInfinite } from '@/entities/book';
 import { EmptyStatus, ErrorStatus, LoadingStatus } from '@/shared/ui/common';
 import { getBookId } from '@/shared/lib/book-utils';
+import { useInfiniteScroll } from '@/shared/hooks';
 import { useSearchStore } from '@/shared/store';
 
 export default function SearchPage() {
   const { query: searchQuery, target: searchTarget, setSearch } = useSearchStore();
   const [expandedBookId, setExpandedBookId] = useState<string | null>(null);
-  const observerTarget = useRef<HTMLDivElement>(null);
 
   const {
     data,
@@ -29,27 +29,10 @@ export default function SearchPage() {
     setSearch(query, target);
   };
 
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        if (entries[0].isIntersecting && hasNextPage && !isFetchingNextPage) {
-          fetchNextPage();
-        }
-      },
-      { threshold: 0.1 }
-    );
-
-    const currentTarget = observerTarget.current;
-    if (currentTarget) {
-      observer.observe(currentTarget);
-    }
-
-    return () => {
-      if (currentTarget) {
-        observer.unobserve(currentTarget);
-      }
-    };
-  }, [hasNextPage, isFetchingNextPage, fetchNextPage]);
+  const observerTarget = useInfiniteScroll(
+    () => fetchNextPage(),
+    { enabled: hasNextPage && !isFetchingNextPage }
+  );
 
   const allBooks = data?.pages.flatMap((page) => page.documents) || [];
   const totalCount = data?.pages[0]?.meta.total_count || 0;
