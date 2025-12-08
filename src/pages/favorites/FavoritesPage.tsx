@@ -1,6 +1,8 @@
 import { useState } from 'react';
 import iconBook from '@/assets/icons/icon_book.png';
 import { EmptyStatus, LoadingStatus } from '@/shared/ui/common';
+import { SearchCountText } from '@/shared/ui/text';
+import { PageTitle } from '@/shared/ui/layout';
 import { BookList } from '@/features/book-list';
 import { useFavoriteBooks } from '@/features/book-favorite/model';
 import { useInfiniteScroll } from '@/shared/hooks';
@@ -20,12 +22,8 @@ export default function FavoritesPage() {
 
   return (
     <div className="max-w-4xl mx-auto px-8 py-8">
-      <p className="flex items-center gap-4 mb-9 text-left text-[16px] leading-[24px] font-medium text-textPrimary">
-        <span>찜한 책</span>
-        <span>
-          총 <span className="font-bold text-primary">{favoriteBooks.length}</span>건
-        </span>
-      </p>
+      <PageTitle>내가 찜한 책</PageTitle>
+      <SearchCountText title="찜한 책" count={favoriteBooks.length} />
 
       {favoriteBooks.length > 0 ? (
         <>

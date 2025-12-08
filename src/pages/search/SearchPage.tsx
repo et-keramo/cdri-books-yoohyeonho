@@ -3,6 +3,8 @@ import { BookList } from '@/features/book-list';
 import { SearchBox } from '@/features/book-search';
 import { useBookSearchInfinite } from '@/entities/book';
 import { EmptyStatus, ErrorStatus, LoadingStatus } from '@/shared/ui/common';
+import { SearchCountText } from '@/shared/ui/text';
+import { PageTitle } from '@/shared/ui/layout';
 import { useInfiniteScroll } from '@/shared/hooks';
 import { useSearchStore } from '@/shared/store';
 
@@ -37,20 +39,13 @@ export default function SearchPage() {
   return (
     <div className="max-w-4xl mx-auto px-8 py-8">
       {/* 타이틀 */}
-      <h2 className="mb-6 text-left text-title2 text-textTitle">
-        도서 검색
-      </h2>
+      <PageTitle>도서 검색</PageTitle>
 
       {/* 검색 영역 */}
       <SearchBox onSearch={handleSearch} initialValue={searchQuery} />
 
       {/* 검색 결과 건수 */}
-      <p className="flex items-center gap-4 mb-9 text-left text-[16px] leading-[24px] font-medium text-textPrimary">
-        <span>도서 검색 결과</span>
-        <span>
-          총 <span className="font-bold text-primary">{totalCount}</span>건
-        </span>
-      </p>
+      <SearchCountText title="도서 검색 결과" count={totalCount} />
 
       {/* 검색 결과 목록 */}
       {isLoading ? (
