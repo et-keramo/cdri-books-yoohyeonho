@@ -3,7 +3,6 @@ import { Layout } from '../shared/ui/layout';
 import { SearchPage } from '../pages/search';
 import { FavoritesPage } from '../pages/favorites';
 import { QueryProvider } from './providers';
-import './styles/App.css';
 
 function App() {
   return (
