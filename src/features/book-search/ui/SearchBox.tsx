@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from 'react';
+import { useState, useRef, useEffect, useCallback } from 'react';
 import iconSearch from '@/assets/icons/icon_search.png';
 import iconClose from '@/assets/icons/icon_close.png';
 import { useSearchHistory } from '../model';
@@ -18,7 +18,6 @@ export default function SearchBox({ onSearch, initialValue = '' }: SearchBoxProp
   const isDetailedSearchingRef = useRef(false);
   const { history, addToHistory, removeFromHistory } = useSearchHistory();
 
-  // URL 파라미터가 변경되면 입력값 업데이트
   useEffect(() => {
     setSearchInput(initialValue);
   }, [initialValue]);
@@ -65,6 +64,12 @@ export default function SearchBox({ onSearch, initialValue = '' }: SearchBoxProp
     removeFromHistory(term);
   };
 
+  const handleFocus = useCallback(() => setIsFocused(true), []);
+
+  const handleBlur = useCallback(() => {
+    setTimeout(() => setIsFocused(false), 200);
+  }, []);
+
   return (
     <div className="relative flex items-start gap-4 mb-6">
       <div
@@ -84,8 +89,8 @@ export default function SearchBox({ onSearch, initialValue = '' }: SearchBoxProp
             value={searchInput}
             onChange={(e) => setSearchInput(e.target.value)}
             onKeyDown={handleKeyDown}
-            onFocus={() => setIsFocused(true)}
-            onBlur={() => setTimeout(() => setIsFocused(false), 200)}
+            onFocus={handleFocus}
+            onBlur={handleBlur}
             placeholder="검색어를 입력하세요"
             className="flex-1 bg-transparent text-caption text-textSecondary
               placeholder:text-textSubtitle focus:outline-none"
