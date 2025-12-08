@@ -21,6 +21,7 @@ export default function BookListItemDetail({
         <img
           src={thumbnail}
           alt={title}
+          loading="lazy"
           className="w-[210px] h-[280px] object-cover rounded"
         />
         <FavoriteButton
