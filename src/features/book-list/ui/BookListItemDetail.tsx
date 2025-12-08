@@ -1,8 +1,6 @@
 import type { KakaoBook } from '@/shared/api';
 import iconArrowUp from '@/assets/icons/icon_arrow_up.png';
-import iconLikeLine from '@/assets/icons/icon_like_line.png';
-import iconLikeFill from '@/assets/icons/icon_like_fill.png';
-import { useFavoriteBooks } from '@/features/book-favorite/model';
+import { FavoriteButton } from '@/features/book-favorite';
 
 interface BookListItemDetailProps {
   book: KakaoBook;
@@ -13,18 +11,6 @@ export default function BookListItemDetail({
   book,
   onClose,
 }: BookListItemDetailProps) {
-  const { addToFavorite, removeFromFavorite, isFavorite } = useFavoriteBooks();
-  const favorited = isFavorite(book);
-
-  const handleToggleFavorite = (e: React.MouseEvent) => {
-    e.stopPropagation();
-    if (favorited) {
-      removeFromFavorite(book);
-    } else {
-      addToFavorite(book);
-    }
-  };
-
   const handlePurchase = () => {
     window.open(book.url, '_blank', 'noopener,noreferrer');
   };
@@ -44,16 +30,11 @@ export default function BookListItemDetail({
           alt={title}
           className="w-[210px] h-[280px] object-cover rounded"
         />
-        <button
-          onClick={handleToggleFavorite}
-          className="absolute top-2 right-2 w-6 h-6 cursor-pointer"
-        >
-          <img
-            src={favorited ? iconLikeFill : iconLikeLine}
-            alt={favorited ? '찜 취소' : '찜하기'}
-            className="w-full h-full"
-          />
-        </button>
+        <FavoriteButton
+          book={book}
+          size="md"
+          className="absolute top-2 right-2"
+        />
       </div>
 
       {/* 제목/저자/책소개 */}
