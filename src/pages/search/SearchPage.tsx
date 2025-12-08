@@ -5,10 +5,10 @@ import { SearchBox } from '@/features/book-search';
 import { useBookSearchInfinite } from '@/entities/book';
 import { EmptyStatus, ErrorStatus, LoadingStatus } from '@/shared/ui/common';
 import { getBookId } from '@/shared/lib/book-utils';
+import { useSearchStore } from '@/shared/store';
 
 export default function SearchPage() {
-  const [searchQuery, setSearchQuery] = useState('');
-  const [searchTarget, setSearchTarget] = useState<'title' | 'person' | 'publisher' | undefined>();
+  const { query: searchQuery, target: searchTarget, setSearch } = useSearchStore();
   const [expandedBookId, setExpandedBookId] = useState<string | null>(null);
   const observerTarget = useRef<HTMLDivElement>(null);
 
@@ -26,8 +26,7 @@ export default function SearchPage() {
   });
 
   const handleSearch = (query: string, target?: 'title' | 'person' | 'publisher') => {
-    setSearchQuery(query);
-    setSearchTarget(target);
+    setSearch(query, target);
   };
 
   useEffect(() => {
@@ -63,7 +62,7 @@ export default function SearchPage() {
       </h2>
 
       {/* 검색 영역 */}
-      <SearchBox onSearch={handleSearch} />
+      <SearchBox onSearch={handleSearch} initialValue={searchQuery} />
 
       {/* 검색 결과 건수 */}
       <p className="flex items-center gap-4 mb-9 text-left text-[16px] leading-[24px] font-medium text-textPrimary">
