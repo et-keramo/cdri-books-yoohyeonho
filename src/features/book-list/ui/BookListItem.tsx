@@ -1,6 +1,7 @@
 import type { KakaoBook } from '@/shared/api';
 import iconArrowDown from '@/assets/icons/icon_arrow_down.png';
 import { FavoriteButton } from '@/features/book-favorite';
+import { getBookDisplayData } from '@/shared/lib/book-utils';
 
 interface BookListItemProps {
   book: KakaoBook;
@@ -15,10 +16,7 @@ export default function BookListItem({
     window.open(book.url, '_blank', 'noopener,noreferrer');
   };
 
-  const thumbnail = book.thumbnail;
-  const title = book.title;
-  const author = book.authors.join(', ');
-  const price = book.sale_price;
+  const { thumbnail, title, authors, salePrice } = getBookDisplayData(book);
   return (
     <div className="flex items-center w-[960px] h-[100px] pl-12 pr-4 border-b border-gray">
       {/* 썸네일 */}
@@ -38,12 +36,12 @@ export default function BookListItem({
       {/* 제목/저자 */}
       <div className="w-[408px] flex items-center gap-4 ml-12 text-left">
         <h3 className="text-title3 text-textPrimary">{title}</h3>
-        <p className="text-body2 text-textSecondary">{author}</p>
+        <p className="text-body2 text-textSecondary">{authors}</p>
       </div>
 
       {/* 가격 */}
       <div className="flex-1 text-title3 text-textPrimary">
-        {price.toLocaleString()}원
+        {salePrice.toLocaleString()}원
       </div>
 
       {/* 구매하기/상세보기 버튼 */}

@@ -1,6 +1,7 @@
 import type { KakaoBook } from '@/shared/api';
 import iconArrowUp from '@/assets/icons/icon_arrow_up.png';
 import { FavoriteButton } from '@/features/book-favorite';
+import { getBookDisplayData } from '@/shared/lib/book-utils';
 
 interface BookListItemDetailProps {
   book: KakaoBook;
@@ -15,12 +16,7 @@ export default function BookListItemDetail({
     window.open(book.url, '_blank', 'noopener,noreferrer');
   };
 
-  const thumbnail = book.thumbnail;
-  const title = book.title;
-  const author = book.authors.join(', ');
-  const description = book.contents;
-  const originalPrice = book.price;
-  const salePrice = book.sale_price;
+  const { thumbnail, title, authors, description, price: originalPrice, salePrice } = getBookDisplayData(book);
   return (
     <div className="flex w-[960px] pl-[54px] pr-4 py-6">
       {/* 썸네일 */}
@@ -41,7 +37,7 @@ export default function BookListItemDetail({
       <div className="flex-1 ml-8 text-left">
         <div className="flex items-center gap-4 mb-4">
           <h3 className="text-[18px] leading-[26px] font-bold text-textPrimary">{title}</h3>
-          <p className="text-body2 text-textSecondary">{author}</p>
+          <p className="text-body2 text-textSecondary">{authors}</p>
         </div>
 
         <div>

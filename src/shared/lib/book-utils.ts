@@ -7,3 +7,17 @@ import type { KakaoBook } from '@/shared/api';
 export function getBookId(book: KakaoBook): string {
   return `${book.title}-${book.isbn}`;
 }
+
+/**
+ * 도서 목록/상세 표시 데이터를 추출
+ */
+export function getBookDisplayData(book: KakaoBook) {
+  return {
+    thumbnail: book.thumbnail,
+    title: book.title,
+    authors: book.authors.join(', '),
+    description: book.contents,
+    price: book.price,
+    salePrice: book.sale_price,
+  };
+}
