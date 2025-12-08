@@ -6,15 +6,14 @@ import { PageTitle } from '@/shared/ui/layout';
 import { BookList } from '@/features/book-list';
 import { useFavoriteBooks } from '@/features/book-favorite/model';
 import { useInfiniteScroll } from '@/shared/hooks';
-
-const ITEMS_PER_PAGE = 10;
+import { SEARCH_PAGE_SIZE } from '@/shared/constants';
 
 export default function FavoritesPage() {
   const { favoriteBooks } = useFavoriteBooks();
-  const [displayCount, setDisplayCount] = useState(ITEMS_PER_PAGE);
+  const [displayCount, setDisplayCount] = useState(SEARCH_PAGE_SIZE);
 
   const observerTarget = useInfiniteScroll(
-    () => setDisplayCount((prev) => prev + ITEMS_PER_PAGE),
+    () => setDisplayCount((prev) => prev + SEARCH_PAGE_SIZE),
     { enabled: displayCount < favoriteBooks.length }
   );
 

@@ -1,8 +1,9 @@
 import type { KakaoBook } from '@/shared/api';
 import { useState, useEffect } from 'react';
 import { getBookId } from '@/shared/lib/book-utils';
+import { STORAGE_KEYS } from '@/shared/constants';
 
-const FAVORITE_BOOKS_KEY = 'favorite-books';
+const FAVORITE_BOOKS_KEY = STORAGE_KEYS.FAVORITE_BOOKS;
 const FAVORITE_BOOKS_CHANGE_EVENT = 'favorite-books-change';
 
 /**

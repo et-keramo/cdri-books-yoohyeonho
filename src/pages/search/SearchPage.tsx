@@ -7,6 +7,7 @@ import { SearchCountText } from '@/shared/ui/text';
 import { PageTitle } from '@/shared/ui/layout';
 import { useInfiniteScroll } from '@/shared/hooks';
 import { useSearchStore } from '@/shared/store';
+import { SEARCH_PAGE_SIZE } from '@/shared/constants';
 
 export default function SearchPage() {
   const { query: searchQuery, target: searchTarget, setSearch } = useSearchStore();
@@ -20,7 +21,7 @@ export default function SearchPage() {
     error,
   } = useBookSearchInfinite({
     query: searchQuery,
-    size: 10,
+    size: SEARCH_PAGE_SIZE,
     ...(searchTarget && { target: searchTarget }),
   });
 

@@ -1,7 +1,7 @@
+import { MAX_SEARCH_HISTORY, STORAGE_KEYS } from '@/shared/constants';
 import { useState } from 'react';
 
-const STORAGE_KEY = 'search-history';
-const MAX_HISTORY = 8;
+const STORAGE_KEY = STORAGE_KEYS.SEARCH_HISTORY;
 
 /**
  * 검색 기록 관리 Hook
@@ -25,7 +25,7 @@ export function useSearchHistory() {
 
     setHistory((prev) => {
       const filtered = prev.filter((item) => item !== trimmed);
-      const newHistory = [trimmed, ...filtered].slice(0, MAX_HISTORY);
+      const newHistory = [trimmed, ...filtered].slice(0, MAX_SEARCH_HISTORY);
       localStorage.setItem(STORAGE_KEY, JSON.stringify(newHistory));
       return newHistory;
     });
