@@ -143,8 +143,10 @@ export default function SearchDetailPopup({
       <button
         type="button"
         onClick={handleSearch}
+        disabled={!searchInput.trim()}
         className="w-[312px] h-[48px] text-caption text-white bg-primary rounded-[8px]
-          hover:bg-primary/90 cursor-pointer transition-colors"
+          hover:bg-primary/90 cursor-pointer transition-colors
+          disabled:bg-gray disabled:cursor-not-allowed"
       >
         검색하기
       </button>
