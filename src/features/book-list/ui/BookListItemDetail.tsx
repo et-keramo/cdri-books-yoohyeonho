@@ -1,7 +1,7 @@
 import type { KakaoBook } from '@/shared/api';
 import iconArrowUp from '@/assets/icons/icon_arrow_up.png';
 import { FavoriteButton } from '@/features/book-favorite';
-import { getBookDisplayData } from '@/shared/lib/book-utils';
+import { getBookDisplayData, openBookPurchasePage } from '@/shared/lib/book-utils';
 
 interface BookListItemDetailProps {
   book: KakaoBook;
@@ -12,11 +12,8 @@ export default function BookListItemDetail({
   book,
   onClose,
 }: BookListItemDetailProps) {
-  const handlePurchase = () => {
-    window.open(book.url, '_blank', 'noopener,noreferrer');
-  };
-
   const { thumbnail, title, authors, description, price: originalPrice, salePrice } = getBookDisplayData(book);
+  
   return (
     <div className="flex w-[960px] pl-[54px] pr-4 py-6">
       {/* 썸네일 */}
@@ -79,7 +76,7 @@ export default function BookListItemDetail({
             </span>
           </p>
           <button
-            onClick={handlePurchase}
+            onClick={() => openBookPurchasePage(book.url)}
             className="w-60 h-12 px-5 py-[13px] text-caption text-white
               bg-primary rounded-lg cursor-pointer hover:bg-primary/90 transition-colors"
           >

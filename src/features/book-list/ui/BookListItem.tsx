@@ -1,7 +1,7 @@
 import type { KakaoBook } from '@/shared/api';
 import iconArrowDown from '@/assets/icons/icon_arrow_down.png';
 import { FavoriteButton } from '@/features/book-favorite';
-import { getBookDisplayData } from '@/shared/lib/book-utils';
+import { getBookDisplayData, openBookPurchasePage } from '@/shared/lib/book-utils';
 
 interface BookListItemProps {
   book: KakaoBook;
@@ -12,11 +12,8 @@ export default function BookListItem({
   book,
   onViewDetail,
 }: BookListItemProps) {
-  const handlePurchase = () => {
-    window.open(book.url, '_blank', 'noopener,noreferrer');
-  };
-
   const { thumbnail, title, authors, salePrice } = getBookDisplayData(book);
+  
   return (
     <div className="flex items-center w-[960px] h-[100px] pl-12 pr-4 border-b border-gray">
       {/* 썸네일 */}
@@ -47,7 +44,7 @@ export default function BookListItem({
       {/* 구매하기/상세보기 버튼 */}
       <div className="flex gap-2">
         <button
-          onClick={handlePurchase}
+          onClick={() => openBookPurchasePage(book.url)}
           className="w-[115px] h-12 px-5 py-[13px] text-caption text-white
             bg-primary rounded-lg cursor-pointer hover:bg-primary/90 transition-colors"
         >

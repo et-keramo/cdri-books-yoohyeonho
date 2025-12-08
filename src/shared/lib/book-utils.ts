@@ -21,3 +21,10 @@ export function getBookDisplayData(book: KakaoBook) {
     salePrice: book.sale_price,
   };
 }
+
+/**
+ * 도서 구매하기 페이지 이동
+ */
+export function openBookPurchasePage(url: string) {
+  window.open(url, '_blank', 'noopener,noreferrer');
+}
