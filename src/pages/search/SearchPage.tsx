@@ -1,16 +1,13 @@
-import { useState } from 'react';
 import iconBook from '@/assets/icons/icon_book.png';
-import { BookListItem, BookListItemDetail } from '@/features/book-list';
+import { BookList } from '@/features/book-list';
 import { SearchBox } from '@/features/book-search';
 import { useBookSearchInfinite } from '@/entities/book';
 import { EmptyStatus, ErrorStatus, LoadingStatus } from '@/shared/ui/common';
-import { getBookId } from '@/shared/lib/book-utils';
 import { useInfiniteScroll } from '@/shared/hooks';
 import { useSearchStore } from '@/shared/store';
 
 export default function SearchPage() {
   const { query: searchQuery, target: searchTarget, setSearch } = useSearchStore();
-  const [expandedBookId, setExpandedBookId] = useState<string | null>(null);
 
   const {
     data,
@@ -62,24 +59,7 @@ export default function SearchPage() {
         <ErrorStatus text="오류가 발생했습니다" />
       ) : allBooks.length > 0 ? (
         <>
-          <div>
-            {allBooks.map((book) => {
-              const bookId = getBookId(book);
-              return expandedBookId === bookId ? (
-                <BookListItemDetail
-                  key={bookId}
-                  book={book}
-                  onClose={() => setExpandedBookId(null)}
-                />
-              ) : (
-                <BookListItem
-                  key={bookId}
-                  book={book}
-                  onViewDetail={() => setExpandedBookId(bookId)}
-                />
-              );
-            })}
-          </div>
+          <BookList books={allBooks} />
 
           {hasNextPage && (
             <div ref={observerTarget}>

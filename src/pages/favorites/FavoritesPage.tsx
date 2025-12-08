@@ -1,16 +1,14 @@
 import { useState } from 'react';
 import iconBook from '@/assets/icons/icon_book.png';
 import { EmptyStatus, LoadingStatus } from '@/shared/ui/common';
-import { BookListItem, BookListItemDetail } from '@/features/book-list';
+import { BookList } from '@/features/book-list';
 import { useFavoriteBooks } from '@/features/book-favorite/model';
-import { getBookId } from '@/shared/lib/book-utils';
 import { useInfiniteScroll } from '@/shared/hooks';
 
 const ITEMS_PER_PAGE = 10;
 
 export default function FavoritesPage() {
   const { favoriteBooks } = useFavoriteBooks();
-  const [expandedBookId, setExpandedBookId] = useState<string | null>(null);
   const [displayCount, setDisplayCount] = useState(ITEMS_PER_PAGE);
 
   const observerTarget = useInfiniteScroll(
@@ -31,24 +29,7 @@ export default function FavoritesPage() {
 
       {favoriteBooks.length > 0 ? (
         <>
-          <div>
-            {displayedBooks.map((book) => {
-              const bookId = getBookId(book);
-              return expandedBookId === bookId ? (
-                <BookListItemDetail
-                  key={bookId}
-                  book={book}
-                  onClose={() => setExpandedBookId(null)}
-                />
-              ) : (
-                <BookListItem
-                  key={bookId}
-                  book={book}
-                  onViewDetail={() => setExpandedBookId(bookId)}
-                />
-              );
-            })}
-          </div>
+          <BookList books={displayedBooks} />
 
           {/* 무한 스크롤 트리거 */}
           {displayCount < favoriteBooks.length && (
