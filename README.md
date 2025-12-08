@@ -25,7 +25,7 @@ npm install
 프로젝트 루트에 `.env` 파일을 생성하고 카카오 API 키를 설정합니다:
 
 ```env
-VITE_KAKAO_API_KEY="발급받은 카카오 API 키"
+VITE_KAKAO_REST_API_KEY="발급받은 카카오 API 키"
 ```
 
 ### 3. 개발 서버 실행
